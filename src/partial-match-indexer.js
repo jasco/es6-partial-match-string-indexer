@@ -44,7 +44,8 @@ export class PartialMatchIndexer {
 
     add(word) {
         let index = this.text.length;
-        this.text.push(word + this.delim);
+        this.text.push(word);
+        word += this.delim;  // ensures no implicit and a leaf always remain a leaf
         for (let ii = 0; ii < word.length; ++ii) {
             this.root = this._insert(this.root, word.slice(ii), index);
         }
@@ -71,7 +72,7 @@ export class PartialMatchIndexer {
         }
         let links = descend(this.root, term);
         return links.reduce((acc, wordIndex) => {
-            return acc.concat(this.text[wordIndex].slice(0, -1));
+            return acc.concat(this.text[wordIndex]);
         }, []);
     }
 }

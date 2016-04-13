@@ -17,19 +17,31 @@ describe('Trie', () => {
         });
 
         it('should match prefix and suffix', () => {
-            trie.search('y').should.deep.equal(['boy', 'yellow']);
+            var e = ['boy', 'yellow'];
+            var r = trie.search('y');
+            r.should.have.members(e);
+            r.length.should.equal(e.length);
         });
 
         it('should match embedded patterns', () => {
-            trie.search('ll').should.deep.equal(['hello', 'jello', 'yellow']);
+            var e = ['hello', 'jello', 'yellow'];
+            var r = trie.search('ll');
+            r.should.have.members(e);
+            r.length.should.equal(e.length);
         });
 
         it('should match varied matches', () => {
-            trie.search('o').should.deep.equal([ 'hello', 'jello', 'yellow', 'mushroom', 'mushroom', 'coat', 'boy' ]);
+            var e = [ 'hello', 'jello', 'yellow', 'mushroom', 'mushroom', 'coat', 'boy' ];
+            var r = trie.search('o');
+            r.should.have.members(e);
+            r.length.should.equal(e.length);
         });
 
         it('should match full words', () => {
-            trie.search('a').should.deep.equal(['a', 'coat']);
+            var e = ['a', 'coat']
+            var r = trie.search('a');
+            r.should.have.members(e);
+            r.length.should.equal(e.length);
         });
 
         it('should return empty results if the pattern does not exist', () => {
