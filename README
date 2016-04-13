@@ -1,0 +1,24 @@
+Index for exact, partial match searching of wordlist.  The entire word is
+returned for each partial match.
+
+This is implemented using a naive suffix tree implementation.  Ukkonen
+algorithm, for instance, should be more performant but it was not clear how to
+walk the compressed trie structure to identify all matches when the suffix is
+repeated.  Also it identified the location of the substring and took additional
+effort to then locate the containing word.  Perhaps in a subsequent
+implementation the implementation can be improved.
+
+To easily support finding multiple matches, each leaf node contains a list of
+indices for complete matches on that subtree branch.
+
+
+    npm install
+    npm test   # or npm run test:cov
+
+
+To produce es5 output:
+
+    npm run compile
+
+References:
+https://github.com/fabsrc/es6-ukkonen-suffix-tree
