@@ -20,5 +20,19 @@ To produce es5 output:
 
     npm run compile
 
+Usage:
+
+    var Indexer = require('./src/partial-match-indexer.transpiled.js').PartialMatchIndexer;
+    var index = new Indexer();
+    index.add('hello');
+    index.add('jello');
+    index.add('plum');
+    index.search('ll');
+
+Results:
+
+    [ "hello", "jello" ]
+
+
 References:
 https://github.com/fabsrc/es6-ukkonen-suffix-tree
