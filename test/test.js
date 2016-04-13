@@ -36,4 +36,13 @@ describe('Trie', () => {
             trie.search('qwerty').should.deep.equal([]);
         });
     });
+    describe('test extended params', () => {
+        it('accepts a preallocation size', () => {
+            let trie = new Trie(10);
+            trie.addAll(['hello', 'jello', 'yellow', 'mushroom', 'coat', 'a', 'boy']);
+
+            // anyway to test more than acceptance of param apart from speed?
+            trie.search('hello').should.deep.equal(['hello']);
+        });
+    });
 });

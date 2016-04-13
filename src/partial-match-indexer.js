@@ -1,6 +1,6 @@
 export class PartialMatchIndexer {
-    constructor() {
-        this.text = '';
+    constructor(size=0) {
+        this.text = size? Array(size) : [];
         this.root = this._createNode();
         this.delim = '\xfe';
     }
@@ -11,10 +11,10 @@ export class PartialMatchIndexer {
         };
     }
 
-    _insert(node, str, start, end) {
+    _insert(node, str, index) {
         if (!str.length) {
             node.links = node.links || [];
-            node.links.push([start, end]);
+            node.links.push(index);
             return node;
         }
 
@@ -24,7 +24,7 @@ export class PartialMatchIndexer {
         if (!t) {
             t = this._createNode();
         }
-        node.transition[l] = this._insert(t, str.slice(1), start, end);
+        node.transition[l] = this._insert(t, str.slice(1), index);
         return node;
     }
 
@@ -43,11 +43,10 @@ export class PartialMatchIndexer {
     }
 
     add(word) {
-        let start = this.text.length;
-        let end = start + word.length;
-        this.text += word + this.delim;
+        let index = this.text.length;
+        this.text.push(word + this.delim);
         for (let ii = 0; ii < word.length; ++ii) {
-            this.root = this._insert(this.root, word.slice(ii), start, end);
+            this.root = this._insert(this.root, word.slice(ii), index);
         }
     }
 
@@ -70,9 +69,9 @@ export class PartialMatchIndexer {
             }
 
         }
-        let pairs = descend(this.root, term);
-        return pairs.reduce((acc, p) => {
-            return acc.concat(this.text.slice(p[0], p[1]));
+        let links = descend(this.root, term);
+        return links.reduce((acc, wordIndex) => {
+            return acc.concat(this.text[wordIndex].slice(0, -1));
         }, []);
     }
 }
