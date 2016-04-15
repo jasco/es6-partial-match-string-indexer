@@ -51,6 +51,40 @@ export class PartialMatchIndexer {
         }
     }
 
+    _remove(term, index, node) {
+        if (term.length === 0) {
+            if (node.links) {
+                const linkIndex = node.links.indexOf(index);
+                if (linkIndex > -1) {
+                    node.links = node.links.slice(0, linkIndex).concat(node.links.slice(linkIndex + 1));
+                    this.text = this.text.slice(0, index).concat(this.text.slice(index + 1));
+                }
+                return (node.links.length === 0);
+            } else {
+                return false;
+            }
+        } else {
+            const next = node.transition[term[0]];
+            if (next) {
+                const childRemoved = this._remove(term.slice(1), index, next);
+                if (childRemoved) {
+                    delete node.transition[term[0]];
+                    return (Object.keys(node.transition).length === 0);
+                }
+            } else {
+                return false;
+            }
+        }
+    }
+
+    remove(word) {
+        const index = this.text.indexOf(word);
+        word += this.delim;
+        for (let ii = 0; ii < word.length; ++ii) {
+            this._remove(word.slice(ii), index, this.root);
+        }
+    }
+
     print() {
         console.log(JSON.stringify(this.root));
     }

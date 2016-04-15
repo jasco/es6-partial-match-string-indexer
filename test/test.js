@@ -57,4 +57,36 @@ describe('Trie', () => {
             trie.search('hello').should.deep.equal(['hello']);
         });
     });
+    describe('test remove word', () => {
+        it('should remove a word from the trie including unused branches', () => {
+            let trieA = new Trie();
+            let trieB = new Trie();
+            trieA.add('abcdef');
+            trieB.add('abcdef');
+            trieB.add('uvwxyz');
+            trieB.should.not.deep.equal(trieA);
+            trieB.remove('uvwxyz');
+            trieB.should.deep.equal(trieA);
+        });
+        it('should remove a word from the trie with some shared prefixes', () => {
+            let trieA = new Trie();
+            let trieB = new Trie();
+            trieA.add('abcdef');
+            trieB.add('abcdef');
+            trieB.add('abcxyz');
+            trieB.should.not.deep.equal(trieA);
+            trieB.remove('abcxyz');
+            trieB.should.deep.equal(trieA);
+        });
+        it('should remove a word from the trie with some shared suffixes', () => {
+            let trieA = new Trie();
+            let trieB = new Trie();
+            trieA.add('abcdef');
+            trieB.add('abcdef');
+            trieB.add('xyzdef');
+            trieB.should.not.deep.equal(trieA);
+            trieB.remove('xyzdef');
+            trieB.should.deep.equal(trieA);
+        });
+    });
 });
