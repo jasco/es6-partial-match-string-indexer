@@ -31,7 +31,7 @@ describe('Trie', () => {
         });
 
         it('should match varied matches', () => {
-            var e = [ 'hello', 'jello', 'yellow', 'mushroom', 'mushroom', 'coat', 'boy' ];
+            var e = [ 'hello', 'jello', 'yellow', 'mushroom', 'coat', 'boy' ];
             var r = trie.search('o');
             r.should.have.members(e);
             r.length.should.equal(e.length);
@@ -46,6 +46,13 @@ describe('Trie', () => {
 
         it('should return empty results if the pattern does not exist', () => {
             trie.search('qwerty').should.deep.equal([]);
+        });
+
+        it('should only return one hit even if the search term is repeated in the word', () => {
+            let test = new Trie();
+            test.add('tumdetumtum');
+            let r = test.search('tum');
+            r.length.should.equal(1);
         });
     });
     describe('test extended params', () => {

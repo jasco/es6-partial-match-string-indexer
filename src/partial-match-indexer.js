@@ -28,6 +28,9 @@ export class PartialMatchIndexer {
         return node;
     }
 
+    /**
+     * Return all links from leaves under this node
+     */
     _harvest(node) {
         let result = node.links || [];
         for (let key of Object.keys(node.transition)) {
@@ -51,6 +54,13 @@ export class PartialMatchIndexer {
         }
     }
 
+    /**
+     * Recursively walk tree removing nodes if possible
+     * @term - search string
+     * @index - source word index in wordlist
+     * @node - current node
+     * returns true if node can be removed
+     */
     _remove(term, index, node) {
         if (term.length === 0) {
             if (node.links) {
@@ -105,7 +115,8 @@ export class PartialMatchIndexer {
 
         }
         let links = descend(this.root, term);
-        return links.reduce((acc, wordIndex) => {
+
+        return [...new Set(links)].reduce((acc, wordIndex) => {
             return acc.concat(this.text[wordIndex]);
         }, []);
     }
